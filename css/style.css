@@ -1,0 +1,500 @@
+
+:root {
+    --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    --card-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --primary-red: #e53e3e;
+    --accent-blue: #3182ce;
+    --shadow-color: rgba(31, 38, 135, 0.08);
+    --navbar-bg: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] {
+    --bg-gradient: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+    --card-bg: rgba(26, 32, 44, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --text-main: #f7fafc;
+    --text-muted: #a0aec0;
+    --primary-red: #fc8181;
+    --accent-blue: #63b3ed;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --navbar-bg: rgba(26, 32, 44, 0.8);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'Noto Sans JP', sans-serif;
+}
+
+body {
+    background: var(--bg-gradient);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Glassmorphic Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: var(--navbar-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    z-index: 1000;
+    transition: background 0.3s;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--text-main);
+}
+
+.accent-text { color: var(--primary-red); }
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-item:hover, .nav-item.active {
+    color: var(--primary-red);
+}
+
+.theme-btn {
+    background: none;
+    border: none;
+    color: var(--text-main);
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.nav-toggle {
+    display: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+/* Falling Sakura System */
+.sakura-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.sakura-petal {
+    position: absolute;
+    background: #ffb7c5;
+    border-radius: 150% 0 150% 150%;
+    animation: fall linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-10px) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% { transform: translateY(105vh) translateX(100px) rotate(360deg); opacity: 0; }
+}
+
+@media (max-width: 768px) {
+    .nav-toggle { display: block; }
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--navbar-bg);
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+        box-shadow: 0 10px 15px var(--shadow-color);
+        display: none;
+    }
+    .nav-menu.show { display: flex; }
+}
+/* --- Global Variables & Japanese Themed Tokens --- */
+
+:root {
+    --primary-red: #E63946;
+    --navy-dark: #1D3557;
+    --ice-white: #F1FAEE;
+    --ocean-blue: #457B9D;
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    
+    /* System Colors */
+    --bg-color: #FAFAFA;
+    --card-bg: #FFFFFF;
+    --text-main: #2B2D42;
+    --text-muted: #6C757D;
+    --nav-bg: rgba(255, 255, 255, 0.9);
+    --shadow-color: rgba(29, 53, 87, 0.08);
+}
+
+[data-theme="dark"] {
+    --bg-color: #0F172A;
+    --card-bg: #1E293B;
+    --text-main: #F8FAFC;
+    --text-muted: #94A3B8;
+    --nav-bg: rgba(15, 23, 42, 0.95);
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* --- Base Resets --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', 'Noto Sans JP', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Navigation Bar --- */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--nav-bg);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 15px var(--shadow-color);
+    transition: background-color 0.3s ease;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--navy-dark);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+[data-theme="dark"] .nav-logo { color: #FFFFFF; }
+
+.nav-logo .accent-text { color: var(--primary-red); }
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-item:hover, .nav-item.active {
+    color: var(--primary-red);
+}
+
+.nav-item .jp-char {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: bold;
+}
+
+.theme-btn {
+    background: none;
+    border: none;
+    color: var(--text-main);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.2s ease;
+}
+.theme-btn:hover { transform: scale(1.15); color: var(--primary-red); }
+
+.nav-toggle {
+    display: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--text-main);
+}
+
+/* --- Hero Section with Mount Fuji Tone --- */
+.hero-section {
+    position: relative;
+    height: 60vh;
+    min-height: 400px;
+    background: linear-gradient(135deg, var(--navy-dark), var(--ocean-blue));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 0 20px;
+    margin-top: 60px;
+    overflow: hidden;
+}
+
+/* Simulated Japanese Wave Pattern Overlay */
+.hero-bg-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0.07;
+    background-image: radial-gradient(circle at 100% 150%, #fff 24%, white 28%, transparent 28%, transparent),
+                      radial-gradient(circle at 0% 150%, #fff 24%, white 28%, transparent 28%, transparent);
+    background-size: 40px 40px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+}
+
+.hero-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    letter-spacing: -0.5px;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 30px;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+.btn-primary {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: var(--primary-red);
+    color: #FFFFFF;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(230, 57, 70, 0.6);
+}
+
+/* --- Selection Grid & Container --- */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    flex: 1;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    position: relative;
+}
+.section-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background-color: var(--primary-red);
+    margin: 10px auto 0 auto;
+    border-radius: 2px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+/* --- Glassmorphic Quiz Cards --- */
+.quiz-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    border: 1px solid var(--glass-border);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.quiz-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(29, 53, 87, 0.15);
+}
+
+.card-icon-wrapper {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+}
+.red-bg { background: linear-gradient(135deg, #FF4D4D, var(--primary-red)); }
+.blue-bg { background: linear-gradient(135deg, #4EA8DE, var(--navy-dark)); }
+.gold-bg { background: linear-gradient(135deg, #F39C12, #D35400); }
+
+.card-big-char { font-family: 'Noto Sans JP', sans-serif; font-size: 4.5rem; font-weight: 700; }
+.card-icon { font-size: 4rem; }
+
+.card-content {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.card-title { font-size: 1.3rem; margin-bottom: 12px; color: var(--text-main); }
+.card-description { font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; flex: 1; }
+
+.card-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 15px;
+}
+
+.card-btn {
+    text-align: center;
+    padding: 11px;
+    border: 2px solid var(--text-main);
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+[data-theme="dark"] .card-btn { border-color: var(--text-muted); color: var(--text-muted); }
+
+.quiz-card:hover .card-btn {
+    background-color: var(--text-main);
+    color: #FFFFFF;
+    border-color: var(--text-main);
+}
+[data-theme="dark"] .quiz-card:hover .card-btn {
+    background-color: #FFFFFF;
+    color: #000000;
+    border-color: #FFFFFF;
+}
+
+/* --- Animations & Effects --- */
+.sakura-container {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 1; overflow: hidden;
+}
+
+.sakura-petal {
+    position: absolute;
+    background-color: #FFB7C5;
+    border-radius: 150% 0 150% 150%;
+    opacity: 0.7;
+    animation: drift linear infinite;
+    transform-origin: center;
+}
+
+@keyframes drift {
+    0% { transform: translateY(-10px) translateX(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateY(105vh) translateX(120px) rotate(720deg); opacity: 0; }
+}
+
+.animate-slide-up { opacity: 0; transform: translateY(20px); animation: slideUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+.animate-fade-in { opacity: 0; animation: fadeIn 0.6s ease forwards; }
+
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+
+@keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* --- Shared Footer --- */
+.footer {
+    text-align: center;
+    padding: 25px;
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--glass-border);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+.text-danger { color: var(--primary-red); }
+
+/* --- Responsive Layout Breakpoints --- */
+@media (max-width: 768px) {
+    .nav-toggle { display: block; }
+    .nav-menu {
+        position: fixed;
+        top: 60px; left: -100%;
+        width: 100%; height: calc(100vh - 60px);
+        background-color: var(--nav-bg);
+        flex-direction: column;
+        padding: 40px 20px;
+        gap: 30px;
+        transition: left 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        backdrop-filter: blur(15px);
+    }
+    .nav-menu.show { left: 0; }
+    .hero-title { font-size: 2rem; }
+    .hero-subtitle { font-size: 1rem; }
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nihongo Master | Japanese Quiz App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="sakura-container" id="sakura-bg"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">🎌</span> Nihongo_With_<span class="accent-text">Shipon</span>
+            </a>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-item active"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="hiragana.html" class="nav-item"><span class="jp-char">あ</span> Hiragana</a>
+                <a href="katakana.html" class="nav-item"><span class="jp-char">ア</span> Katakana</a>
+                <a href="vocabulary.html" class="nav-item"><i class="fa-solid fa-book"></i> Vocabulary</a>
+                <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section">
+        <div class="hero-bg-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title animate-slide-up">🎌 Learn Japanese Effectively</h1>
+            <p class="hero-subtitle animate-slide-up delay-1">Master Hiragana, Katakana, and Minna no Nihongo N5 Vocabulary with English & Bangla translations.</p>
+            <a href="#quiz-selection" class="btn-primary animate-slide-up delay-2">Get Started <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </header>
+
+    <main class="main-container" id="quiz-selection">
+        <h2 class="section-title">Select a Learning Track</h2>
+        <div class="cards-grid">
+            
+            <div class="quiz-card animate-fade-in">
+                <div class="card-icon-wrapper red-bg">
+                    <span class="card-big-char">あ</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">📖 Hiragana Quiz</h3>
+                    <p class="card-description">Test your knowledge on the 46 basic phonetic characters used for native Japanese words and grammar modifiers.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-layer-group"></i> 46 Characters</span>
+                        <span><i class="fa-solid fa-language"></i> EN / BN</span>
+                    </div>
+                    <a href="hiragana.html" class="card-btn">Start Quiz <i class="fa-solid fa-chevron-right"></i></a>
+                </div>
+            </div>
+
+            <div class="quiz-card animate-fade-in delay-1">
+                <div class="card-icon-wrapper blue-bg">
+                    <span class="card-big-char">ア</span>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">🈶 Katakana Quiz</h3>
+                    <p class="card-description">Master the 46 characters utilized exclusively for foreign loanwords, technical terminology, and distinct emphasis.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-layer-group"></i> 46 Characters</span>
+                        <span><i class="fa-solid fa-language"></i> EN / BN</span>
+                    </div>
+                    <a href="katakana.html" class="card-btn">Start Quiz <i class="fa-solid fa-chevron-right"></i></a>
+                </div>
+            </div>
+
+            <div class="quiz-card animate-fade-in delay-2">
+                <div class="card-icon-wrapper gold-bg">
+                    <span class="card-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">📚 N5 Vocabulary Quiz</h3>
+                    <p class="card-description">Dive into lessons 1 to 25 of the standard Minna no Nihongo textbook series with interactive context breakdowns.</p>
+                    <div class="card-meta">
+                        <span><i class="fa-solid fa-list-check"></i> 25 Lessons</span>
+                        <span><i class="fa-solid fa-trophy"></i> Tracking</span>
+                    </div>
+                    <a href="vocabulary.html" class="card-btn">Explore Lessons <i class="fa-solid fa-chevron-right"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Nihongo Master. Made By Shipon.</p>
+    </footer>
+
+    <script>
+        // Toggle Mobile Menu
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('show');
+                navToggle.innerHTML = navMenu.classList.contains('show') ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+            });
+        }
+
+        // Dark/Light Theme Control
+        const themeToggle = document.getElementById('theme-toggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            let theme = document.documentElement.getAttribute('data-theme');
+            let newTheme = theme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeToggle.innerHTML = theme === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+        }
+
+        // Programmatic Cherry Blossom Generator
+        const sakuraBg = document.getElementById('sakura-bg');
+        if (sakuraBg) {
+            for (let i = 0; i < 25; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('sakura-petal');
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.animationDuration = (Math.random() * 6 + 6) + 's'; 
+                petal.style.animationDelay = Math.random() * 5 + 's';
+                petal.style.width = Math.random() * 8 + 8 + 'px';
+                petal.style.height = Math.random() * 6 + 6 + 'px';
+                sakuraBg.appendChild(petal);
+            }
+        }
+    </script>
+</body>
+</html>
