@@ -1,5 +1,4 @@
-// Complete Dataset: All 46 Basic Katakana Characters
-const katakanaDataset = [
+const basicKatakana = [
     { char: "ア", answer: "A (আ)", options: ["A (আ)", "I (ই)", "U (উ)", "E (এ)"] },
     { char: "イ", answer: "I (ই)", options: ["A (আ)", "I (ই)", "U (উ)", "O (ও)"] },
     { char: "ウ", answer: "U (উ)", options: ["KA (কা)", "I (ই)", "U (উ)", "E (এ)"] },
@@ -48,7 +47,20 @@ const katakanaDataset = [
     { char: "ン", answer: "N (ন)", options: ["N (ন)", "M (ম)", "SO (সো)", "NO (নো)"] }
 ];
 
-// Operational Variables
+const dakutenKatakana = [
+    { char: "ガ", answer: "GA (গা)", options: ["GA (গা)", "KA (কা)", "ZA (জা)", "GI (গি)"] },
+    { char: "ザ", answer: "ZA (জা)", options: ["ZA (জা)", "SA (সা)", "JA (জা)", "DA (দা)"] },
+    { char: "ダ", answer: "DA (দা)", options: ["DA (দা)", "TA (তা)", "DE (দে)", "ZA (জা)"] },
+    { char: "バ", answer: "BA (বা)", options: ["BA (বা)", "PA (পা)", "HA (হা)", "MA (মা)"] },
+    { char: "パ", answer: "PA (পা)", options: ["PA (পা)", "BA (বা)", "HA (হা)", "PI (পি)"] }
+];
+
+const comboKatakana = [
+    { char: "シャ", answer: "SHA (শা)", options: ["SHA (শা)", "CHA (চা)", "SA (সা)", "SHU (শু)"] },
+    { char: "チュ", answer: "CHU (চু)", options: ["CHU (চু)", "CHO (চো)", "SHU (শু)", "TSU (ৎসু)"] },
+    { char: "キョ", answer: "KYO (কিও)", options: ["KYO (কিও)", "KI (কি)", "KIO (কিও)", "CHO (চো)"] }
+];
+
 let quizPool = [];
 let currentQuestionIndex = 0;
 let scoreCorrect = 0;
@@ -56,7 +68,6 @@ let scoreWrong = 0;
 let currentQuestionItem = null;
 let hasAnswered = false;
 
-// DOM Selectors
 const quizBox = document.getElementById('quiz-box');
 const scoreboardBox = document.getElementById('scoreboard-box');
 const charDisplay = document.getElementById('character-display');
@@ -69,13 +80,20 @@ const feedbackExp = document.getElementById('feedback-explanation');
 const feedbackIcon = document.getElementById('feedback-icon');
 const nextBtn = document.getElementById('next-question-btn');
 const restartBtn = document.getElementById('restart-quiz-btn');
+const toggleDakuten = document.getElementById('toggle-dakuten');
+const toggleCombo = document.getElementById('toggle-combo');
 
-// Initial Setup Hook
-document.addEventListener("DOMContentLoaded", initQuiz);
+document.addEventListener("DOMContentLoaded", () => {
+    initQuiz();
+    toggleDakuten.addEventListener('change', initQuiz);
+    toggleCombo.addEventListener('change', initQuiz);
+});
 
 function initQuiz() {
-    quizPool = [...katakanaDataset];
-    // Fisher-Yates shuffle logic
+    quizPool = [...basicKatakana];
+    if (toggleDakuten.checked) quizPool.push(...dakutenKatakana);
+    if (toggleCombo.checked) quizPool.push(...comboKatakana);
+
     for (let i = quizPool.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [quizPool[i], quizPool[j]] = [quizPool[j], quizPool[i]];
@@ -84,10 +102,8 @@ function initQuiz() {
     currentQuestionIndex = 0;
     scoreCorrect = 0;
     scoreWrong = 0;
-    
     scoreboardBox.classList.add('hidden');
     quizBox.classList.remove('hidden');
-    
     loadQuestion();
 }
 
@@ -97,11 +113,8 @@ function loadQuestion() {
     optionsGrid.innerHTML = "";
     
     currentQuestionItem = quizPool[currentQuestionIndex];
-    
     counterLabel.textContent = `Question ${currentQuestionIndex + 1}/${quizPool.length}`;
-    const calculatedPercentage = (currentQuestionIndex / quizPool.length) * 100;
-    progressFill.style.width = `${calculatedPercentage}%`;
-    
+    progressFill.style.width = `${(currentQuestionIndex / quizPool.length) * 100}%`;
     charDisplay.textContent = currentQuestionItem.char;
     
     let shuffledChoices = [...currentQuestionItem.options];
@@ -122,74 +135,41 @@ function loadQuestion() {
 function verifySelection(selectedButton, selectedText) {
     if (hasAnswered) return;
     hasAnswered = true;
-    
     const allOptionButtons = optionsGrid.querySelectorAll('.option-btn');
     allOptionButtons.forEach(btn => btn.disabled = true);
     
-    const isCorrect = (selectedText === currentQuestionItem.answer);
-    
-    if (isCorrect) {
+    if (selectedText === currentQuestionItem.answer) {
         selectedButton.classList.add('correct-state');
         scoreCorrect++;
-        
         feedbackIcon.innerHTML = "🎉";
         feedbackTitle.textContent = "Correct!";
         feedbackTitle.className = "text-success";
     } else {
         selectedButton.classList.add('wrong-state');
         scoreWrong++;
-        
         feedbackIcon.innerHTML = "❌";
         feedbackTitle.textContent = "Incorrect";
         feedbackTitle.className = "text-danger";
-        
         allOptionButtons.forEach(btn => {
-            if (btn.textContent === currentQuestionItem.answer) {
-                btn.classList.add('correct-state');
-            }
+            if (btn.textContent === currentQuestionItem.answer) btn.classList.add('correct-state');
         });
     }
-    
-    feedbackExp.textContent = `Character "${currentQuestionItem.char}" translates to "${currentQuestionItem.answer}"`;
+    feedbackExp.textContent = `"${currentQuestionItem.char}" handles as "${currentQuestionItem.answer}"`;
     feedbackPanel.classList.remove('hidden');
 }
 
 nextBtn.addEventListener('click', () => {
     currentQuestionIndex++;
-    if (currentQuestionIndex < quizPool.length) {
-        loadQuestion();
-    } else {
-        displayFinalScoreboard();
-    }
+    if (currentQuestionIndex < quizPool.length) { loadQuestion(); } else { displayFinalScoreboard(); }
 });
 
 function displayFinalScoreboard() {
     progressFill.style.width = "100%";
     quizBox.classList.add('hidden');
     scoreboardBox.classList.remove('hidden');
-    
     document.getElementById('stat-correct').textContent = scoreCorrect;
     document.getElementById('stat-wrong').textContent = scoreWrong;
-    
-    const rawAccuracy = quizPool.length > 0 ? Math.round((scoreCorrect / quizPool.length) * 100) : 0;
-    document.getElementById('stat-accuracy').textContent = `${rawAccuracy}%`;
-    
-    const evalMessage = document.getElementById('score-evaluation-msg');
-    const starContainer = document.getElementById('star-rating-container');
-    
-    if (rawAccuracy === 100) {
-        evalMessage.textContent = "Perfect! Katakana Master!";
-        starContainer.textContent = "⭐⭐⭐⭐⭐";
-    } else if (rawAccuracy >= 80) {
-        evalMessage.textContent = "Superb! Foreign loanwords are easy for you!";
-        starContainer.textContent = "⭐⭐⭐⭐";
-    } else if (rawAccuracy >= 50) {
-        evalMessage.textContent = "Good job! A little more study will clear up the rest.";
-        starContainer.textContent = "⭐⭐⭐";
-    } else {
-        evalMessage.textContent = "Keep reviewing! Katakana takes time to stick.";
-        starContainer.textContent = "⭐";
-    }
+    const accuracy = Math.round((scoreCorrect / quizPool.length) * 100);
+    document.getElementById('stat-accuracy').textContent = `${accuracy}%`;
 }
-
 restartBtn.addEventListener('click', initQuiz);
