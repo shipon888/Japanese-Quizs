@@ -34,6 +34,14 @@
     <main class="quiz-main-container">
         <div id="quiz-box" class="quiz-box-card">
             <div class="quiz-header">
+                <div class="character-mode-toggle-container" style="display:flex; gap:15px; margin-bottom:15px; flex-wrap:wrap;">
+                <label style="font-weight:600; font-size:0.85rem; display:flex; align-items:center; gap:6px; cursor:pointer;">
+                    <input type="checkbox" id="toggle-dakuten" checked> Include Dakuten/Maru (が, ぱ)
+                </label>
+                <label style="font-weight:600; font-size:0.85rem; display:flex; align-items:center; gap:6px; cursor:pointer;">
+                    <input type="checkbox" id="toggle-combo" checked> Include Combinations (しゃ, きょ)
+                </label>
+            </div>
                 <div class="quiz-info">
                     <span class="info-tag"><i class="fa-solid fa-layer-group"></i> Hiragana Basic</span>
                     <span id="question-counter" class="info-tag">Question 1/46</span>
