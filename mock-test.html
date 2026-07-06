@@ -36,57 +36,99 @@
     </nav>
 
     <main class="quiz-main-container" style="max-width: 800px;">
-        <div id="quiz-box" class="quiz-box-card">
-            <div class="quiz-header">
-                <div class="quiz-info">
-                    <span id="exam-type-badge" class="exam-context-label">NAT-TEST N5 Pattern</span>
-                    <span id="question-counter" class="info-tag">Question 1/20</span>
-                </div>
-                <div class="progress-bar-wrapper">
-                    <div id="progress-fill" class="progress-bar-fill"></div>
-                </div>
+    
+    <div class="test-control-panel" style="background: var(--card-bg); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid var(--glass-border); padding:25px; border-radius:16px; margin-bottom:25px; box-shadow: 0 4px 15px var(--shadow-color);">
+        <h3 style="margin-top:0; margin-bottom: 15px; color: var(--text-main);"><i class="fa-solid fa-list-check"></i> Select Your N5 Exam Set</h3>
+        
+        <div style="display:flex; gap:15px; flex-wrap:wrap; margin-bottom:15px;">
+            <div style="flex: 1; min-width: 200px;">
+                <label style="display:block; font-weight:600; margin-bottom:8px; font-size: 0.85rem; color: var(--text-muted);">Exam Type</label>
+                <select id="exam-type-select" style="width: 100%; padding:10px 12px; border-radius:8px; border:1px solid var(--glass-border); background: var(--card-bg); color: var(--text-main); font-weight: 500;">
+                    <option value="nat">NAT-Test N5 (10 Sets)</option>
+                    <option value="jlpt">JLPT N5 (10 Sets)</option>
+                </select>
             </div>
-
-            <div class="question-display-container" style="margin: 20px 0;">
-                <div id="exam-question-field" class="exam-question-text">きのうは 📑**びょういん**へ いきました。</div>
-                <p class="question-prompt">Select the correct choice to complete or read the target sentence:</p>
+            <div style="flex: 1; min-width: 150px;">
+                <label style="display:block; font-weight:600; margin-bottom:8px; font-size: 0.85rem; color: var(--text-muted);">Question Set</label>
+                <select id="exam-set-select" style="width: 100%; padding:10px 12px; border-radius:8px; border:1px solid var(--glass-border); background: var(--card-bg); color: var(--text-main); font-weight: 500;">
+                    <option value="set1">Set 1</option>
+                    <option value="set2">Set 2</option>
+                    <option value="set3">Set 3</option>
+                    <option value="set4">Set 4</option>
+                    <option value="set5">Set 5</option>
+                    <option value="set6">Set 6</option>
+                    <option value="set7">Set 7</option>
+                    <option value="set8">Set 8</option>
+                    <option value="set9">Set 9</option>
+                    <option value="set10">Set 10</option>
+                </select>
             </div>
+            <div style="display:flex; align-items:flex-end; min-width: 200px;">
+                <button id="start-exam-btn" style="width: 100%; background: #38a169; color:#fff; border:none; padding:11px 20px; font-weight:600; border-radius:8px; cursor:pointer; transition: opacity 0.2s;">
+                    🚀 Start Selected Mock Test
+                </button>
+            </div>
+        </div>
+        
+        <div id="exam-timer-display" style="font-size:1.2rem; font-weight:700; color:var(--primary-red); display:none; margin-top: 10px;">
+            ⏱️ Time Remaining: <span id="timer-clock">25:00</span>
+        </div>
+    </div>
 
-            <div id="options-grid" class="options-layout-grid" style="grid-template-columns: 1fr;">
-                </div>
-
-            <div id="feedback-panel" class="feedback-panel hidden">
-                <div class="feedback-message-box">
-                    <span id="feedback-icon"></span>
-                    <div class="feedback-text-wrapper">
-                        <p id="feedback-title"></p>
-                        <div id="feedback-explanation" class="explanation-card"></div>
-                    </div>
-                </div>
-                <button id="next-question-btn" class="btn-next">Next Question <i class="fa-solid fa-arrow-right"></i></button>
+    <div id="quiz-box" class="quiz-box-card hidden">
+        <div class="quiz-header">
+            <div class="quiz-info">
+                <span id="exam-type-badge" class="exam-context-label" style="background-color: var(--primary-red); color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: bold;">Exam Pool Loaded</span>
+                <span id="question-counter" class="info-tag">Question 1/35</span>
+            </div>
+            <div class="progress-bar-wrapper">
+                <div id="progress-fill" class="progress-bar-fill"></div>
             </div>
         </div>
 
-        <div id="scoreboard-box" class="quiz-box-card hidden">
-            <div class="scoreboard-header">
-                <span class="trophy-badge">🏆</span>
-                <h2>Exam Results Overview</h2>
-                <p id="score-evaluation-msg">Analysis Complete</p>
-                <div id="star-rating-container" class="star-rating">⭐⭐⭐⭐⭐</div>
-            </div>
-            
-            <div class="stats-grid-row">
-                <div class="stat-item shadow-green"><span class="stat-num text-success" id="stat-correct">0</span><span class="stat-label">Correct</span></div>
-                <div class="stat-item shadow-red"><span class="stat-num text-danger" id="stat-wrong">0</span><span class="stat-label">Wrong</span></div>
-                <div class="stat-item shadow-blue"><span class="stat-num text-info" id="stat-accuracy">0%</span><span class="stat-label">Accuracy</span></div>
+        <div class="question-display-container" style="margin: 20px 0;">
+            <div id="character-display" class="exam-question-text" style="font-family: 'Noto Sans JP', sans-serif; font-size: 1.6rem; line-height: 1.6; color: var(--text-main); text-align: left;">Loading question structure...</div>
+            <p class="question-prompt" style="font-size: 0.9rem; color: var(--text-muted); text-align: left; margin-top: 10px;">Select the single correct option to complete or translate the system block:</p>
+        </div>
+
+        <div id="options-grid" class="options-layout-grid" style="grid-template-columns: 1fr;">
             </div>
 
-            <div class="scoreboard-actions">
-                <button id="restart-quiz-btn" class="btn-restart"><i class="fa-solid fa-rotate-left"></i> Retake Exam</button>
-                <a href="index.html" class="btn-home-return"><i class="fa-solid fa-house"></i> Return Home</a>
+        <div id="feedback-panel" class="feedback-panel hidden" style="margin-top: 20px; padding: 20px; border-radius: 12px; background: rgba(0,0,0,0.03);">
+            <div class="feedback-message-box">
+                <span id="feedback-icon" style="font-size: 1.8rem;"></span>
+                <div class="feedback-text-wrapper">
+                    <p id="feedback-title" style="margin:0; font-weight:700;"></p>
+                    <div id="feedback-explanation" style="margin-top:5px; font-size:0.9rem; color: var(--text-main);"></div>
+                </div>
             </div>
+            <button id="next-question-btn" class="btn-next" style="margin-left: auto;">Next Question <i class="fa-solid fa-arrow-right"></i></button>
         </div>
-    </main>
+    </div>
+
+    <div id="scoreboard-box" class="quiz-box-card hidden">
+        <div class="scoreboard-header">
+            <span class="trophy-badge">🏆</span>
+            <h2>Exam Performance Complete!</h2>
+            <p id="score-evaluation-msg">Processing grade results...</p>
+            <div id="star-rating-container" class="star-rating">⭐⭐⭐⭐⭐</div>
+        </div>
+        
+        <div class="stats-grid-row">
+            <div class="stat-item shadow-green"><span class="stat-num text-success" id="stat-correct">0</span><span class="stat-label">Correct answers</span></div>
+            <div class="stat-item shadow-red"><span class="stat-num text-danger" id="stat-wrong">0</span><span class="stat-label">Incorrect answers</span></div>
+            <div class="stat-item shadow-blue"><span class="stat-num text-info" id="stat-accuracy">0%</span><span class="stat-label">Calculated Score</span></div>
+        </div>
+
+        <div class="scoreboard-actions">
+            <button id="restart-quiz-btn" class="btn-restart"><i class="fa-solid fa-rotate-left"></i> Take Another Set</button>
+            <a href="index.html" class="btn-home-return"><i class="fa-solid fa-house"></i> Back to Dashboard</a>
+        </div>
+    </div>
+</main>
+
+<script src="js/quiz-data.js"></script>
+<script src="js/mock-test.js"></script>
 
     <script>
         // Official Real-Exam High Yield Dataset (10 NAT-TEST Format + 10 JLPT N5 Format)
