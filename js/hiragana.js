@@ -1,5 +1,4 @@
-// Complete Dataset: All 46 Core Basic Characters
-const hiraganaDataset = [
+const basicHiragana = [
     { char: "あ", answer: "A (আ)", options: ["A (আ)", "I (ই)", "U (উ)", "E (এ)"] },
     { char: "い", answer: "I (ই)", options: ["A (আ)", "I (ই)", "U (উ)", "O (ও)"] },
     { char: "う", answer: "U (উ)", options: ["KA (কা)", "I (ই)", "U (উ)", "E (এ)"] },
@@ -48,7 +47,20 @@ const hiraganaDataset = [
     { char: "ん", answer: "N (ন)", options: ["N (ন)", "M (ম)", "SO (সো)", "NO (নো)"] }
 ];
 
-// Operational Variables
+const dakutenHiragana = [
+    { char: "が", answer: "GA (গা)", options: ["GA (গা)", "KA (কা)", "ZA (জা)", "GI (গি)"] },
+    { char: "ざ", answer: "ZA (জা)", options: ["ZA (জা)", "SA (সা)", "JA (জা)", "DA (দা)"] },
+    { char: "だ", answer: "DA (দা)", options: ["DA (দা)", "TA (তা)", "DE (দে)", "ZA (জা)"] },
+    { char: "ば", answer: "BA (বা)", options: ["BA (বা)", "PA (পা)", "HA (হা)", "MA (মা)"] },
+    { char: "ぱ", answer: "PA (পা)", options: ["PA (পা)", "BA (বা)", "HA (হা)", "PI (পি)"] }
+];
+
+const comboHiragana = [
+    { char: "しゃ", answer: "SHA (শা)", options: ["SHA (শা)", "CHA (চা)", "SA (সা)", "SHU (শু)"] },
+    { char: "ちゅ", answer: "CHU (চু)", options: ["CHU (চু)", "CHO (চো)", "SHU (শু)", "TSU (ৎসু)"] },
+    { char: "きょ", answer: "KYO (কিও)", options: ["KYO (কিও)", "KI (কি)", "KIO (কিও)", "CHO (চো)"] }
+];
+
 let quizPool = [];
 let currentQuestionIndex = 0;
 let scoreCorrect = 0;
@@ -56,7 +68,6 @@ let scoreWrong = 0;
 let currentQuestionItem = null;
 let hasAnswered = false;
 
-// DOM Selectors
 const quizBox = document.getElementById('quiz-box');
 const scoreboardBox = document.getElementById('scoreboard-box');
 const charDisplay = document.getElementById('character-display');
@@ -69,13 +80,20 @@ const feedbackExp = document.getElementById('feedback-explanation');
 const feedbackIcon = document.getElementById('feedback-icon');
 const nextBtn = document.getElementById('next-question-btn');
 const restartBtn = document.getElementById('restart-quiz-btn');
+const toggleDakuten = document.getElementById('toggle-dakuten');
+const toggleCombo = document.getElementById('toggle-combo');
 
-// Initial Setup
-document.addEventListener("DOMContentLoaded", initQuiz);
+document.addEventListener("DOMContentLoaded", () => {
+    initQuiz();
+    toggleDakuten.addEventListener('change', initQuiz);
+    toggleCombo.addEventListener('change', initQuiz);
+});
 
 function initQuiz() {
-    // Duplicate array reference & perform Fisher-Yates shuffle to guarantee true randomization
-    quizPool = [...hiraganaDataset];
+    quizPool = [...basicHiragana];
+    if (toggleDakuten.checked) quizPool.push(...dakutenHiragana);
+    if (toggleCombo.checked) quizPool.push(...comboHiragana);
+
     for (let i = quizPool.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [quizPool[i], quizPool[j]] = [quizPool[j], quizPool[i]];
@@ -84,10 +102,8 @@ function initQuiz() {
     currentQuestionIndex = 0;
     scoreCorrect = 0;
     scoreWrong = 0;
-    
     scoreboardBox.classList.add('hidden');
     quizBox.classList.remove('hidden');
-    
     loadQuestion();
 }
 
@@ -97,23 +113,16 @@ function loadQuestion() {
     optionsGrid.innerHTML = "";
     
     currentQuestionItem = quizPool[currentQuestionIndex];
-    
-    // Update Question Visual Metadata
     counterLabel.textContent = `Question ${currentQuestionIndex + 1}/${quizPool.length}`;
-    const calculatedPercentage = (currentQuestionIndex / quizPool.length) * 100;
-    progressFill.style.width = `${calculatedPercentage}%`;
-    
-    // Render Character
+    progressFill.style.width = `${(currentQuestionIndex / quizPool.length) * 100}%`;
     charDisplay.textContent = currentQuestionItem.char;
     
-    // Shuffle Options Array for this question specifically
     let shuffledChoices = [...currentQuestionItem.options];
     for (let i = shuffledChoices.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffledChoices[i], shuffledChoices[j]] = [shuffledChoices[j], shuffledChoices[i]];
     }
     
-    // Create UI Option Elements
     shuffledChoices.forEach(choiceText => {
         const choiceBtn = document.createElement('button');
         choiceBtn.classList.add('option-btn');
@@ -124,81 +133,43 @@ function loadQuestion() {
 }
 
 function verifySelection(selectedButton, selectedText) {
-    if (hasAnswered) return; // Prevent double clicking actions
+    if (hasAnswered) return;
     hasAnswered = true;
-    
     const allOptionButtons = optionsGrid.querySelectorAll('.option-btn');
-    allOptionButtons.forEach(btn => btn.disabled = true); // Lock options input
+    allOptionButtons.forEach(btn => btn.disabled = true);
     
-    const isCorrect = (selectedText === currentQuestionItem.answer);
-    
-    if (isCorrect) {
+    if (selectedText === currentQuestionItem.answer) {
         selectedButton.classList.add('correct-state');
         scoreCorrect++;
-        
         feedbackIcon.innerHTML = "🎉";
         feedbackTitle.textContent = "Correct!";
         feedbackTitle.className = "text-success";
     } else {
         selectedButton.classList.add('wrong-state');
         scoreWrong++;
-        
         feedbackIcon.innerHTML = "❌";
         feedbackTitle.textContent = "Incorrect";
         feedbackTitle.className = "text-danger";
-        
-        // Highlight correct target button implicitly
         allOptionButtons.forEach(btn => {
-            if (btn.textContent === currentQuestionItem.answer) {
-                btn.classList.add('correct-state');
-            }
+            if (btn.textContent === currentQuestionItem.answer) btn.classList.add('correct-state');
         });
     }
-    
-    feedbackExp.textContent = `Character "${currentQuestionItem.char}" translates to "${currentQuestionItem.answer}"`;
+    feedbackExp.textContent = `"${currentQuestionItem.char}" handles as "${currentQuestionItem.answer}"`;
     feedbackPanel.classList.remove('hidden');
 }
 
-// Next Button Handler
 nextBtn.addEventListener('click', () => {
     currentQuestionIndex++;
-    if (currentQuestionIndex < quizPool.length) {
-        loadQuestion();
-    } else {
-        displayFinalScoreboard();
-    }
+    if (currentQuestionIndex < quizPool.length) { loadQuestion(); } else { displayFinalScoreboard(); }
 });
 
 function displayFinalScoreboard() {
     progressFill.style.width = "100%";
     quizBox.classList.add('hidden');
     scoreboardBox.classList.remove('hidden');
-    
-    // Inject Raw Data Indicators
     document.getElementById('stat-correct').textContent = scoreCorrect;
     document.getElementById('stat-wrong').textContent = scoreWrong;
-    
-    const rawAccuracy = quizPool.length > 0 ? Math.round((scoreCorrect / quizPool.length) * 100) : 0;
-    document.getElementById('stat-accuracy').textContent = `${rawAccuracy}%`;
-    
-    // Dynamic Performance Stars Evaluation
-    const evalMessage = document.getElementById('score-evaluation-msg');
-    const starContainer = document.getElementById('star-rating-container');
-    
-    if (rawAccuracy === 100) {
-        evalMessage.textContent = "Perfect! Absolute Mastery!";
-        starContainer.textContent = "⭐⭐⭐⭐⭐";
-    } else if (rawAccuracy >= 80) {
-        evalMessage.textContent = "Excellent work! Keep it up!";
-        starContainer.textContent = "⭐⭐⭐⭐";
-    } else if (rawAccuracy >= 50) {
-        evalMessage.textContent = "Good effort! Practice makes perfect.";
-        starContainer.textContent = "⭐⭐⭐";
-    } else {
-        evalMessage.textContent = "Keep reviewing! You will improve!";
-        starContainer.textContent = "⭐";
-    }
+    const accuracy = Math.round((scoreCorrect / quizPool.length) * 100);
+    document.getElementById('stat-accuracy').textContent = `${accuracy}%`;
 }
-
-// Restart Hook
 restartBtn.addEventListener('click', initQuiz);
